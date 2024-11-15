@@ -16,12 +16,15 @@ class TypeNotFoundError(Exception):
     Occurs when a type is not found, for example,
     when trying to read a TLObject with an invalid constructor code.
     """
-    def __init__(self, invalid_constructor_id, remaining):
-        super().__init__(
-            'Could not find a matching Constructor ID for the TLObject '
-            'that was supposed to be read with ID {:08x}. See the FAQ '
-            'for more details. '
-            'Remaining bytes: {!r}'.format(invalid_constructor_id, remaining))
+    def __init__(self, invalid_constructor_id, remaining=-1):
+        if isinstance(invalid_constructor_id, str):
+            super().__init__(invalid_constructor_id)
+        else:
+            super().__init__(
+                'Could not find a matching Constructor ID for the TLObject '
+                'that was supposed to be read with ID {:08x}. See the FAQ '
+                'for more details. '
+                'Remaining bytes: {!r}'.format(invalid_constructor_id, remaining))
 
         self.invalid_constructor_id = invalid_constructor_id
         self.remaining = remaining
